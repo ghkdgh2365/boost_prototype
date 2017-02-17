@@ -1,0 +1,57 @@
+<p id="notice"><%= notice %></p>
+<% if @post.bulletin.post_type == :blog %>
+  <p>
+    <strong>목표:</strong>
+    <%= @post.title %>
+  </p>
+  <p>
+    <strong>구체적인 목표와 계획:</strong>
+    <%= @post.content %>
+  </p>
+  <p>
+    <strong>시작 날짜:</strong>
+    <%= @post.start_day %>
+  </p>
+  <p>
+    <strong>종료 날짜:</strong>
+    <%= @post.end_day %>
+  </p>
+  <p>
+    <strong>예치금:</strong>
+    <%= @post.set_money %>
+  </p>
+  <p>
+    <strong>목표달성 확인자:</strong>
+    <%= @post.checker_name %>
+  </p>
+  
+  <p>
+    <strong>목표달성 실패 시 예치금 수령자:</strong>
+    <%= @post.receiver_name %>
+  </p>
+  <p>
+    <strong>예금주:</strong>
+    <%= @post.racer_name %>
+  </p>
+  <p>
+    <strong>입금 계좌번호:</strong>
+    012345-67-891011 / 씨앗은행 / 예금주:이상해씨
+  </p>
+  <button type="button" class="btn btn-success success_goal">목표달성!</button> <!-- click -> alert (진짜냐?) -> Yes -> alert("ㅊㅋ") -> 버튼 비활성화 -->
+  <button type="button" class="btn btn-danger fail_goal">목표달성 실패ㅠ</button> <!-- click -> alert(진짜냐?) -> Yes -> alert("ㅠ") -> 버튼 비활성화 -->
+<% end %>
+
+<% if @post.bulletin.post_type == :bulletin %>
+<div class="well">
+  <p>
+    <strong>제목:</strong>
+    <%= @post.title %>
+  </p>
+  <p>
+    <strong>내용:</strong>
+    <%= @post.content %>
+  </p>
+</div>
+<% end %>
+<%= link_to '수정하기', (@bulletin.present? ? edit_bulletin_post_path(@bulletin, @post)  : edit_post_path(@post)), class: 'btn btn-default' %>
+<%= link_to '목록으로', (@bulletin.present? ? bulletin_posts_path(@bulletin) : posts_path), class: 'btn btn-default' %>

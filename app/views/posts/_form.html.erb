@@ -1,0 +1,36 @@
+<%= simple_form_for(@bulletin.present? ? [@post.bulletin, @post] : @post) do |f| %>
+  <%= f.error_notification %>
+    <% if @post.bulletin.post_type == :blog %>
+      <div class="form-inputs">
+        <%= f.input :title, label:"목표", placeholder:"당신의 목표를 적어주세요. 예시) 3KG 감량" %>
+        <%= f.input :content, label:"구체적인 목표와 계획", placeholder:"목표 달성을 위한 구체적인 계획을 작성해주세요.", input_html: { rows: 10 } %>
+        <%= f.input :start_day, label: "시작날짜" %>
+        <%= f.input :end_day, label:"종료날짜" %>
+        <%= f.input :set_money, label: "예치금액" , placeholder:"금액이 높으면 높을 수록 의지는 UP!"%>
+        <%= f.input :checker_name, label: "목표달성 확인자" , placeholder:"목표 달성 유무를 확인해주는 사람의 이름을 적어주세요. (본인도 가능)"%>
+        <%= f.input :receiver_name, label: "실패 시 예치금 수령자", placeholder:"목표 달성 실패시 예치금을 수령할 분의 이름을 적어주세요.(기부를 원할 시 기부 라고 적어주세요)" %>
+        <%= f.input :racer_name, label: "예금주", placeholder:" 예치금 입금 시 예금주를 적어주세요." %>
+      </div>
+      <div class="form-actions">
+        <%= f.button :submit, "작성 완료" %>
+        <%= link_to '각서 확인하기', @post, class: 'btn btn-default' if @post.persisted? %>
+        <%= link_to '목록으로', (@bulletin.present? ? bulletin_posts_path(@bulletin) : posts_path), class: 'btn btn-default' %>    
+      </div>
+    <% end %>
+    <% if @post.bulletin.post_type == :bulletin %>
+      <div class="form-inputs">
+        <%= f.input :title, label:"제목" %>
+        <%= f.input :content, label:"내용", input_html: { rows: 10 } %>
+      </div>
+      <div class="form-actions">
+        <%= f.button :submit, "작성 완료" %>
+        <%= link_to '공지사항 확인하기', @post, class: 'btn btn-default' if @post.persisted? %>
+        <%= link_to '목록으로', (@bulletin.present? ? bulletin_posts_path(@bulletin) : posts_path), class: 'btn btn-default' %>    
+      </div>
+    <% end %>
+<% end %>
+
+
+
+
+        
