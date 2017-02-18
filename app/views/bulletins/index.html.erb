@@ -11,6 +11,7 @@
 
   <tbody>
     <% @bulletins.each do |bulletin| %>
+      <% if bulletin.updatable_by? current_user %>
       <tr>
         <td><%= bulletin.title %></td>
         <td><%= bulletin.description %></td>
@@ -20,6 +21,7 @@
           <%= link_to 'Destroy', bulletin, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-default' %>
         </td>
       </tr>
+      <% end %>
     <% end %>
   </tbody>
 </table>

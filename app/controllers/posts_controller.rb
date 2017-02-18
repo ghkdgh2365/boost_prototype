@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  before_action :authenticate_user!, only: [ :index, :new, :edit, :create, :update, :destroy ]
+  before_action :authenticate_user!, only: [ :index, :new, :edit, :create, :update, :destroy, :confirm_goal_show ]
   before_action :set_bulletin
   before_action :set_post, only: [:show, :edit, :update, :destroy]
 
@@ -64,7 +64,7 @@ class PostsController < ApplicationController
     
     @post.destroy
     respond_to do |format|
-      format.html { redirect_to (@bulletin.present? ? bulletin_posts_url : posts_url), notice: 'Post was successfully destroyed.' }
+      format.html { redirect_to (@bulletin.present? ? bulletin_posts_url : posts_url), notice: '성공적으로 삭제되었습니다!' }
       format.json { head :no_content }
     end
   end

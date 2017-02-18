@@ -7,6 +7,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
   has_many :posts, dependent: :destroy
   has_many :bulletins, dependent: :destroy
+  has_many :confirms, dependent: :destroy
   
   after_create :set_default_role, if: Proc.new { User.count > 1 }
   

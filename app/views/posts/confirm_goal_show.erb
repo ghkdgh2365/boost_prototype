@@ -1,10 +1,12 @@
 
 
 <% @confirm_goal.each do |c| %>
-    <div class="well">
-        <p><%= c.confirm_content %></p>
-        <p><%= c.post_id %></p>
-        <p><%= c.id %></p>
-        <p><%= c.pass_fail %></p>
-    </div>
+    <% if c.updatable_by? current_user %>
+        <div class="well">
+            <p><%= c.confirm_content %></p>
+            <p><%= c.post_id %></p>
+            <p><%= c.id %></p>
+            <p><%= c.pass_fail %></p>
+        </div>
+    <% end %>
 <% end %>
