@@ -2,3 +2,9 @@
 <p>: 본 서비스는 "목표 달성을 위해 동기부여를 주어 목표를 달성시킵니다."</p>
 <br />
 <%= link_to "각서 작성하러 가기", bulletin_posts_path(1), class:'btn btn-default' %>
+<% if user_signed_in? %>
+  <p>현재 로그인된 유저의 이메일 : <%= current_user.email %></p>
+  <p><%= link_to "로그아웃", destroy_user_session_path, method: :delete, data: { confirm: "Are you sure?" } %></p>
+<% else %>
+  <p><%= link_to "로그인", new_user_session_path %></p>
+<% end %>

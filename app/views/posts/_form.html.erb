@@ -1,5 +1,12 @@
 <%= simple_form_for(@bulletin.present? ? [@post.bulletin, @post] : @post) do |f| %>
   <%= f.error_notification %>
+      <div class="row">
+        <div class='col-md-12'>
+          <p style='text-align:right;'>
+            created by <%= current_user.email %>, Current Time : <%= Time.now %>
+          </p>
+        </div>
+      </div>
     <% if @post.bulletin.post_type == :blog %>
       <div class="form-inputs">
         <%= f.input :title, label:"목표", placeholder:"당신의 목표를 적어주세요. 예시) 3KG 감량" %>

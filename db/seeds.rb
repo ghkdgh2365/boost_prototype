@@ -9,3 +9,6 @@
 Bulletin.create! title: '목표달성', post_type: :blog
 Bulletin.create! title: '매일매일', post_type: :blog
 Bulletin.create! title: '공지사항'
+
+admin_user = User.create( name: "관리자", email: 'admin@email.com', password: '12345678', confirmed_at: Time.now )
+admin_user.add_role :admin

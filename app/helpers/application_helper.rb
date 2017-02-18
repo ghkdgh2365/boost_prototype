@@ -13,5 +13,9 @@ module ApplicationHelper
             flash_type.to_s
         end
     end
+    
+    def user_roles(user)
+      user.roles.map(&:name).join(',').titleize
+    end
 
 end

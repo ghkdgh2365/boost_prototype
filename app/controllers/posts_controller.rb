@@ -1,4 +1,5 @@
 class PostsController < ApplicationController
+  before_action :authenticate_user!, only: [ :index, :new, :edit, :create, :update, :destroy ]
   before_action :set_bulletin
   before_action :set_post, only: [:show, :edit, :update, :destroy]
 
@@ -20,13 +21,15 @@ class PostsController < ApplicationController
 
   # GET /posts/1/edit
   def edit
+    authorize_action_for @post
   end
 
   # POST /posts
   # POST /posts.json
   def create
     @post = @bulletin.present? ? @bulletin.posts.new(post_params) : Post.new(post_params)
-
+    @post.user = current_user
+    
     respond_to do |format|
       if @post.save
         format.html { redirect_to (@bulletin.present? ? [@post.bulletin, @post] : @post), notice: '성공적으로 작성되었습니다!' }
@@ -41,6 +44,8 @@ class PostsController < ApplicationController
   # PATCH/PUT /posts/1
   # PATCH/PUT /posts/1.json
   def update
+    authorize_action_for @post
+    
     respond_to do |format|
       if @post.update(post_params)
         format.html { redirect_to (@bulletin.present? ? [@post.bulletin, @post] : @post), notice: '성공적으로 작성되었습니다!' }
@@ -55,6 +60,8 @@ class PostsController < ApplicationController
   # DELETE /posts/1
   # DELETE /posts/1.json
   def destroy
+    authorize_action_for @post
+    
     @post.destroy
     respond_to do |format|
       format.html { redirect_to (@bulletin.present? ? bulletin_posts_url : posts_url), notice: 'Post was successfully destroyed.' }

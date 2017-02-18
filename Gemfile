@@ -1,5 +1,11 @@
 source 'https://rubygems.org'
 
+
+gem 'devise'
+gem 'rolify'
+gem 'authority'
+gem 'letter_opener', group: :development
+
 gem 'simple_enum', '~> 2.0.0' , require: 'simple_enum/mongoid'
 gem 'bootstrap-sass', '~> 3.3.6'
 gem 'simple_form'

@@ -1,17 +1,22 @@
 <h2><%= bulletin_name params[:bulletin_id] %></h2>
 
-<% @posts.each do | post | %>
-    <div class='post'>
-      <div class='title'><%= post.title %></div>
-      <div class='content'><%= simple_format post.content %></div>
-      <div>
-          <%= link_to '확인하기', [post.bulletin, post], class:'btn btn-default' %>
-          <%= link_to '수정하기', edit_bulletin_post_path(post.bulletin, post), class:'btn btn-default' %>
-          <%= link_to '삭제하기', [post.bulletin, post], method: :delete, data: { confirm: 'Are you sure?' }, class:'btn btn-default' %>
-      </div>
-    </div>
-<% end %>
 
+<% @posts.each do | post | %>
+  <% if post.updatable_by? current_user %>
+      <div class='post'>
+        <div class='title'><%= post.title %></div>
+        <div class='content'><%= simple_format post.content %></div>
+        <div>
+            <%= link_to '확인하기', [post.bulletin, post], class:'btn btn-default' %>
+          <% if user_signed_in? %>
+            <%= link_to '수정하기', edit_bulletin_post_path(post.bulletin, post), class:'btn btn-default' if post.updatable_by? current_user %>
+            <%= link_to '삭제하기', [post.bulletin, post], method: :delete, data: { confirm: 'Are you sure?' }, class:'btn btn-default' if post.deletable_by? current_user %>
+          <% end %>
+            <%= post.user.present? ? post.user.email : "n/a" %>, <%= post.created_at %>
+        </div>
+      </div>
+  <% end %>
+<% end %>
 <br>
 
 <%= link_to '각서 작성하기', new_bulletin_post_path, class: 'btn btn-default' %>
