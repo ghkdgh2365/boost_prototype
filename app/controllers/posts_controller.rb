@@ -29,7 +29,7 @@ class PostsController < ApplicationController
 
     respond_to do |format|
       if @post.save
-        format.html { redirect_to (@bulletin.present? ? [@post.bulletin, @post] : @post), notice: 'Post was successfully created.' }
+        format.html { redirect_to (@bulletin.present? ? [@post.bulletin, @post] : @post), notice: '성공적으로 작성되었습니다!' }
         format.json { render :show, status: :created, location: @post }
       else
         format.html { render :new }
@@ -43,7 +43,7 @@ class PostsController < ApplicationController
   def update
     respond_to do |format|
       if @post.update(post_params)
-        format.html { redirect_to (@bulletin.present? ? [@post.bulletin, @post] : @post), notice: 'Post was successfully updated.' }
+        format.html { redirect_to (@bulletin.present? ? [@post.bulletin, @post] : @post), notice: '성공적으로 작성되었습니다!' }
         format.json { render :show, status: :ok, location: @post }
       else
         format.html { render :edit }
@@ -61,7 +61,19 @@ class PostsController < ApplicationController
       format.json { head :no_content }
     end
   end
-
+  
+  def confirm_goal
+    @confirm_goal = Confirm.new
+    @confirm_goal.confirm_content = params[:confirm_goal_content]
+    @confirm_goal.post_id = params[:id_of_post]
+    @confirm_goal.pass_fail = params[:confirm_pass_fail]
+    @confirm_goal.save
+    
+  end
+  
+  def confirm_goal_show
+    @confirm_goal = Confirm.all
+  end
   private
     def set_bulletin
       @bulletin = Bulletin.find(params[:bulletin_id]) if params[:bulletin_id].present?

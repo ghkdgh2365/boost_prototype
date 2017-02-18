@@ -24,7 +24,6 @@
     <strong>목표달성 확인자:</strong>
     <%= @post.checker_name %>
   </p>
-  
   <p>
     <strong>목표달성 실패 시 예치금 수령자:</strong>
     <%= @post.receiver_name %>
@@ -42,23 +41,6 @@
   <button type="button" class="btn btn-danger fail_goal" data-toggle="modal" data-target="#exampleModal_2" data-whatever="<%= @post.racer_name %>">목표달성 실패ㅠ</button>
   <!-- click -> 아쉽습니다 ㅠ 본인의 실패 원인을 작성해주세요 ! (예치금을 받을 분의 계좌를 써주세요) -> Yes(게시글 작성 ajax)
    -> alert("예치금이 설정된 분에게 송금됩니다..") -> 버튼 비활성화 -->
-<% end %>
-
-<% if @post.bulletin.post_type == :bulletin %>
-<div class="well">
-  <p>
-    <strong>제목:</strong>
-    <%= @post.title %>
-  </p>
-  <p>
-    <strong>내용:</strong>
-    <%= @post.content %>
-  </p>
-</div>
-<% end %>
-<%= link_to '수정하기', (@bulletin.present? ? edit_bulletin_post_path(@bulletin, @post)  : edit_post_path(@post)), class: 'btn btn-default' %>
-<%= link_to '목록으로', (@bulletin.present? ? bulletin_posts_path(@bulletin) : posts_path), class: 'btn btn-default' %>
-
 
 <div class="modal fade" id="exampleModal_1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -68,20 +50,20 @@
         <h4 class="modal-title" id="exampleModalLabel"></h4>
       </div>
       <div class="modal-body">
-        <form>
+        
           <!--<div class="form-group">-->
           <!--  <label for="recipient-name" class="control-label">Recipient:</label>-->
           <!--  <input type="text" class="form-control" id="recipient-name">-->
           <!--</div>-->
           <div class="form-group">
             <label for="message-text" class="control-label">축하합니다 ! 소감을 작성해주세요 !</label>
-            <textarea class="form-control" id="message-text"></textarea>
+            <textarea class="form-control" id="message-text1" name="confirm_goal_content"></textarea>
           </div>
-        </form>
+        
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
-        <button type="button" class="btn btn-primary">작성 완료</button>
+        <button value="<%= @post.id %>" type="button" class="btn btn-primary confirm_submit1" data-dismiss="modal">작성 완료</button>
       </div>
     </div>
   </div>
@@ -102,18 +84,33 @@
           <!--</div>-->
           <div class="form-group">
             <label for="message-text" class="control-label">아쉽습니다 ㅠ 본인의 실패 원인을 작성해주세요 !</label>
-            <textarea class="form-control" id="message-text"></textarea>
+            <textarea class="form-control" id="message-text2" name="confirm_goal_content"></textarea>
           </div>
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">취소</button>
-        <button type="button" class="btn btn-primary">작성 완료</button>
+        <button value="<%= @post.id %>" type="button" class="btn btn-primary confirm_submit2" data-dismiss="modal">작성 완료</button>
       </div>
     </div>
   </div>
 </div>
+<% end %>
+<% if @post.bulletin.post_type == :bulletin %>
+<div class="well">
+  <p>
+    <strong>제목:</strong>
+    <%= @post.title %>
+  </p>
+  <p>
+    <strong>내용:</strong>
+    <%= @post.content %>
+  </p>
+</div>
+<% end %>
 
+<%= link_to '수정하기', (@bulletin.present? ? edit_bulletin_post_path(@bulletin, @post)  : edit_post_path(@post)), class: 'btn btn-default' %>
+<%= link_to '목록으로', (@bulletin.present? ? bulletin_posts_path(@bulletin) : posts_path), class: 'btn btn-default' %>
 <script>
 $('#exampleModal_1').on('show.bs.modal', function (event) {
   var button = $(event.relatedTarget) // Button that triggered the modal
@@ -135,5 +132,44 @@ $('#exampleModal_2').on('show.bs.modal', function (event) {
   var modal = $(this)
   modal.find('.modal-title').text('수고하셨습니다!' + recipient + '님')
   modal.find('.modal-body input').val(recipient)
+})
+
+
+$(".confirm_submit1").click(function(){
+  post_id = this.value;
+  post_content = $("#message-text1").val();
+  pass_fail = $(".confirm_submit1").attr("class");
+  $.ajax({
+    method: "POST",
+    url: "confirm_goal",
+    data: { confirm_goal_content: post_content, id_of_post: post_id, confirm_pass_fail: pass_fail },
+    success: function(){
+      alert( "입금하겠습니다.");
+      $(".success_goal").attr("disabled", "disabled");
+      $(".fail_goal").attr("disabled", "disabled");
+    },
+    error: function(){
+      alert( "작성 실패");
+    }
+  })
+})
+
+$(".confirm_submit2").click(function(){
+  post_id = this.value;
+  post_content = $("#message-text2").val();
+  pass_fail = $(".confirm_submit2").attr("class");
+  $.ajax({
+    method: "POST",
+    url: "confirm_goal",
+    data: { confirm_goal_content: post_content, id_of_post: post_id, confirm_pass_fail: pass_fail },
+    success: function(){
+      alert( "송금하겠습니다.");
+      $(".success_goal").attr("disabled", "disabled");
+      $(".fail_goal").attr("disabled", "disabled");
+    },
+    error: function(){
+      alert( "작성 실패");
+    }
+  })
 })
 </script>

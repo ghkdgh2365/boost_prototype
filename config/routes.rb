@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  post 'bulletins/:id/posts/confirm_goal' => 'posts#confirm_goal'
+  get 'bulletins/:id/posts/confirm_goal_show' =>'posts#confirm_goal_show'
   resources :posts
   resources :bulletins do
     resources :posts
